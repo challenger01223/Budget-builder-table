@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -244,53 +244,62 @@ export class AppComponent implements OnInit {
     }
   }
   onDataChange(): void {
-    let s: number = 0;
-    let s1: number = 0;
+    let PL: Array<number> = Array(this.monthCount + 1).fill(0);
+    let income: number = 0;
+    let income1: number = 0;
+    let expense: number = 0;
+    let expense1: number = 0;
     for (let i = 0; i <= this.monthCount; i++) {
       for (let j = 0; j < this.incomes.length; j++) {
         if (this.incomes[j].type == 3) {
-          this.incomes[j].values[i] = s1;
-          s1 = 0;
+          this.incomes[j].values[i] = income1;
+          PL[i] = PL[i] + income1;
+          income1 = 0;
         }
         else if (this.incomes[j].type == 2) {
-          this.incomes[j].values[i] = s;
-          s1 += s;
-          s = 0;
+          this.incomes[j].values[i] = income;
+          income1 += income;
+          income = 0;
         }
         else if (this.incomes[j].type != 4)
-          s += Number(this.incomes[j].values[i]);
+          income += Number(this.incomes[j].values[i]);
       }
-    }
-    s = 0, s1 = 0;
-    for (let i = 0; i <= this.monthCount; i++) {
+
       for (let j = 0; j < this.expenses.length; j++) {
         if (this.expenses[j].type == 3) {
-          this.expenses[j].values[i] = s1;
-          s1 = 0;
+          this.expenses[j].values[i] = expense1;
+          PL[i] = PL[i] - expense1;
+          expense1 = 0;
         }
         else if (this.expenses[j].type == 2) {
-          this.expenses[j].values[i] = s;
-          s1 += s;
-          s = 0;
+          this.expenses[j].values[i] = expense;
+          expense1 += expense;
+          expense = 0;
         }
         else if (this.expenses[j].type != 4)
-          s += Number(this.expenses[j].values[i]);
+          expense += Number(this.expenses[j].values[i]);
       }
-    }
-    for (let i = 0; i < this.monthCount; i++) {
-      this.balances[0].values[i] = this.balances[2].values[i] - this.balances[1].values[i];
+
+      this.balances[0].values[i] = PL[i];
+      if (i === 1) {
+        this.balances[1].values[i] = 0;
+      } else {
+        this.balances[1].values[i] = this.balances[2].values[i - 1]
+      }
+      this.balances[2].values[i] = this.balances[1].values[i] + this.balances[0].values[i];
     }
   }
-  applyToAll(i: number, j: number, type: number): void {
-    for (let row = 0; row < this.incomes.length; row++)
-      for (let col = 0; col < this.incomes[row].values.length; col++)
-        if (this.incomes[row].type == 0 || this.incomes[row].type == 1)
-          this.incomes[row].values[col] = (type == 0 ? this.incomes[i].values[j + 1] : this.expenses[i].values[j + 1]);
 
-    for (let row = 0; row < this.expenses.length; row++)
-      for (let col = 0; col < this.expenses[row].values.length; col++)
-        if (this.expenses[row].type == 0 || this.expenses[row].type == 1)
-          this.expenses[row].values[col] = (type == 0 ? this.incomes[i].values[j + 1] : this.expenses[i].values[j + 1]);
+  applyToAll(i: number, j: number, type: number): void {
+    if (type === 0) {
+      for (let m = 0; m <= this.monthCount; m++) {
+        this.incomes[i].values[m] = this.incomes[i].values[j + 1]
+      }
+    } else {
+      for (let m = 0; m <= this.monthCount; m++) {
+        this.expenses[i].values[m] = this.expenses[i].values[j + 1]
+      }
+    }
     this.onDataChange();
   }
 
@@ -299,15 +308,6 @@ export class AppComponent implements OnInit {
     this.onDataChange();
   }
 
-  onBalance(event: KeyboardEvent): void {
-    switch (event.key) {
-      case '0':
-        this.showBalance = 1;
-        break;
-      default:
-        break;
-    }
-  }
   onKeyDown(event: KeyboardEvent, element: HTMLInputElement, row: number, content: string): void {
     switch (event.key) {
       case 'Enter':
@@ -369,28 +369,24 @@ export class AppComponent implements OnInit {
     switch (event.key) {
       case 'ArrowUp':
         index = element.id.split('_');
-        // console.log(index[0]+'_'+index[1]);
         if (Number(index[0]) > 0) {
           document.getElementById(Number(index[0]) - 1 + '_' + index[1])?.focus();
         }
         break;
       case 'ArrowDown':
         index = element.id.split('_');
-        // console.log(index[0]+'_'+index[1]);
         if (Number(index[0]) < this.incomes.length + this.expenses.length + this.balances.length) {
           document.getElementById(Number(index[0]) + 1 + '_' + index[1])?.focus();
         }
         break;
       case 'ArrowLeft':
         index = element.id.split('_');
-        // console.log(index[0]+'_'+index[1]);
         if (Number(index[1]) > 0) {
           document.getElementById(index[0] + '_' + (Number(index[1]) - 1))?.focus();
         }
         break;
       case 'ArrowRight':
         index = element.id.split('_');
-        // console.log(index[0]+'_'+index[1]);
         if (Number(index[1]) < this.monthCount) {
           document.getElementById(index[0] + '_' + (Number(index[1]) + 1))?.focus();
         }

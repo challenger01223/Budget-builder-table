@@ -1,5 +1,5 @@
 <main class="main">
-  <div class="container mt-8 m-auto" (keydown)="onBalance($event)" tabindex="0">
+  <div class="container my-8 m-auto" tabindex="0">
     <span class="p-8">Start Period: <input class="outline outline-1" type="date" [(ngModel)]="startMonth"
         (change)="onMonthChange()" /></span>
     <span class="p-8">End Period: <input class="outline outline-1" type="date" [(ngModel)]="endMonth"
@@ -70,20 +70,14 @@
         </tr>
       </ng-container>
       <!-- Balance -->
-      <ng-container *ngIf="showBalance == 1">
-        <tr class="border border-black" *ngFor="let balance of balances; let i = index">
-          <td class="border border-black text-right font-black">{{balance.name}}</td>
-          <td *ngFor="let value of balance.tvalues; let j = index" tabindex="0"
-            id="{{i+incomes.length+expenses.length}}_{{j}}" #myElement (keydown)="onArrow($event, myElement)"
-            class="border border-black text-right font-black">
-            <p *ngIf="i == 0" class="w-full text-right">{{balance.values[j+1]}}</p>
-            <input *ngIf="i != 0" class="w-full text-right" type="text"
-              id="{{i + incomes.length + expenses.length}}_{{j}}" #myElement
-              (keydown)="onKeyDown($event, myElement, i, myElement.value)" [(ngModel)]="balance.values[j+1]"
-              (change)="onDataChange()" />
-          </td>
-        </tr>
-      </ng-container>
+      <tr class="border border-black" *ngFor="let balance of balances; let i = index">
+        <td class="border border-black text-right font-black">{{balance.name}}</td>
+        <td *ngFor="let value of balance.tvalues; let j = index" tabindex="0"
+          id="{{i+incomes.length+expenses.length}}_{{j}}" #myElement (keydown)="onArrow($event, myElement)"
+          class="border border-black text-right font-black">
+          <p class="w-full text-right">{{balance.values[j+1]}}</p>
+        </td>
+      </tr>
     </table>
   </div>
   <app-context-menu [menuItems]="menuItems" id="context-menu" #contextMenu></app-context-menu>

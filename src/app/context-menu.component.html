@@ -1,5 +1,7 @@
-<div *ngIf="visible" class="context-menu" [style.top]="position.y" [style.left]="position.x">
-  <ul>
-    <li *ngFor="let item of menuItems" (click)="onMenuItemClick(item.action)">{{ item.label }}</li>
+<div *ngIf="visible" class="fixed bg-white border border-gray-300 z-50" [style.top]="position.y" [style.left]="position.x">
+  <ul class="list-none p-0 m-0">
+    <li *ngFor="let item of menuItems" (click)="onMenuItemClick(item.action)" class="p-2 cursor-pointer hover:bg-gray-100">
+      {{ item.label }}
+    </li>
   </ul>
 </div>
