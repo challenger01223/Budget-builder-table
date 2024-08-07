@@ -1,0 +1,5 @@
+<div *ngIf="visible" class="context-menu" [style.top]="position.y" [style.left]="position.x">
+  <ul>
+    <li *ngFor="let item of menuItems" (click)="onMenuItemClick(item.action)">{{ item.label }}</li>
+  </ul>
+</div>
