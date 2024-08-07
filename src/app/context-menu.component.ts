@@ -4,14 +4,15 @@ import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 @Component({
   selector: 'app-context-menu',
   standalone: true,
-  imports: [
-    CommonModule
-  ],
+  imports: [CommonModule],
   templateUrl: './context-menu.component.html',
-  styleUrls: ['./context-menu.component.css']
+  styleUrls: ['./context-menu.component.css'],
 })
 export class ContextMenuComponent implements OnInit, OnDestroy {
-  @Input() menuItems: { label: string, action: (i: number, j: number, type: number) => void }[] = [];
+  @Input() menuItems: {
+    label: string;
+    action: (i: number, j: number, type: number) => void;
+  }[] = [];
   position = { x: '0px', y: '0px' };
   visible = false;
   i = 0;
@@ -47,8 +48,10 @@ export class ContextMenuComponent implements OnInit, OnDestroy {
 
   private onClickOutside(event: MouseEvent) {
     const target = event.target as HTMLElement;
-    const contextMenu = document.querySelector('app-context-menu') as HTMLElement;
-    
+    const contextMenu = document.querySelector(
+      'app-context-menu'
+    ) as HTMLElement;
+
     if (contextMenu && !contextMenu.contains(target)) {
       this.hide();
     }

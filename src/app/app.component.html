@@ -1,14 +1,30 @@
 <main class="main">
   <div class="container my-8 m-auto" tabindex="0">
-    <span class="p-8">Start Period: <input class="outline outline-1" type="date" [(ngModel)]="startMonth"
-        (change)="onMonthChange()" /></span>
-    <span class="p-8">End Period: <input class="outline outline-1" type="date" [(ngModel)]="endMonth"
-        (change)="onMonthChange()" /></span>
+    <span class="p-8"
+      >Start Period:
+      <input
+        class="outline outline-1"
+        type="date"
+        [(ngModel)]="startMonth"
+        (change)="onMonthChange()"
+    /></span>
+    <span class="p-8"
+      >End Period:
+      <input
+        class="outline outline-1"
+        type="date"
+        [(ngModel)]="endMonth"
+        (change)="onMonthChange()"
+    /></span>
     <br />
     <table class="mt-16 table table-fixed border border-black w-full">
       <tr class="border border-black">
-        <th class="border border-black text-left w-1/4">Start Period V End Period V</th>
-        <th *ngFor="let i of months" class="border border-black text-right">{{i.month + " " + i.year}}</th>
+        <th class="border border-black text-left w-1/4">
+          Start Period V End Period V
+        </th>
+        <th *ngFor="let i of months" class="border border-black text-right">
+          {{ i.month + " " + i.year }}
+        </th>
         <th class="border-black">Action</th>
       </tr>
       <!-- Income -->
@@ -18,25 +34,78 @@
       <ng-container *ngFor="let income of incomes; let i = index">
         <tr class="border border-black">
           <td
-            class="border border-black text-right {{income.type == 1 ? 'font-semibold' : income.type == 0 ? 'font-black' : 'font-bold'}}">
-            {{income.name}}</td>
-          <td *ngFor="let value of income.tvalues; let j = index" tabindex="0" id="{{i}}_{{j}}" #myElement
-            (keydown)="onArrow($event, myElement)"
-            class="border border-black text-right {{income.type == 1 ? 'font-semibold' : income.type == 0 ? 'font-black' : 'font-bold'}}">
-            <p *ngIf="income.type == 2 || income.type == 3" class="w-full text-right">{{income.values[j+1]}}</p>
-            <input *ngIf="income.type == 0 || income.type == 1" class="w-full text-right" autofocus type="text"
-              id="{{i}}_{{j}}" #myElement (keydown)="onKeyDown($event, myElement, i, myElement.value)"
-              [(ngModel)]="income.values[j+1]" (change)="onDataChange()"
-              (contextmenu)="onRightClick($event, i, j, 0)" />
-            <input *ngIf="income.type == 4" class="w-full text-right" type="text" id="{{i}}_{{j}}" #myElement
-              (keydown)="onKeyDown($event, myElement, i, myElement.value)" name="addSubIncome" value="" />
-            <input *ngIf="income.type == 5" class="w-full text-right" type="text" id="{{i}}_{{j}}" #myElement
-              (keydown)="onKeyDown($event, myElement, i, myElement.value)" name="addParentIncome" value="" />
+            class="border border-black text-right {{
+              income.type == 1
+                ? 'font-semibold'
+                : income.type == 0
+                ? 'font-black'
+                : 'font-bold'
+            }}"
+          >
+            {{ income.name }}
           </td>
-          <td *ngIf="income.type == 0 || income.type == 1"
-            class="cursor-pointer text-center text-[#FF0000] font-semibold" (click)="onDeleteRow(i, 0)">Delete</td>
+          <td
+            *ngFor="let value of income.tvalues; let j = index"
+            tabindex="0"
+            id="{{ i }}_{{ j }}"
+            #myElement
+            (keydown)="onArrow($event, myElement)"
+            class="border border-black text-right {{
+              income.type == 1
+                ? 'font-semibold'
+                : income.type == 0
+                ? 'font-black'
+                : 'font-bold'
+            }}"
+          >
+            <p
+              *ngIf="income.type == 2 || income.type == 3"
+              class="w-full text-right"
+            >
+              {{ income.values[j + 1] }}
+            </p>
+            <input
+              *ngIf="income.type == 0 || income.type == 1"
+              class="w-full text-right"
+              autofocus
+              type="text"
+              id="{{ i }}_{{ j }}"
+              #myElement
+              (keydown)="onKeyDown($event, myElement, i, myElement.value)"
+              [(ngModel)]="income.values[j + 1]"
+              (change)="onDataChange()"
+              (contextmenu)="onRightClick($event, i, j, 0)"
+            />
+            <input
+              *ngIf="income.type == 4"
+              class="w-full text-right"
+              type="text"
+              id="{{ i }}_{{ j }}"
+              #myElement
+              (keydown)="onKeyDown($event, myElement, i, myElement.value)"
+              name="addSubIncome"
+              value=""
+            />
+            <input
+              *ngIf="income.type == 5"
+              class="w-full text-right"
+              type="text"
+              id="{{ i }}_{{ j }}"
+              #myElement
+              (keydown)="onKeyDown($event, myElement, i, myElement.value)"
+              name="addParentIncome"
+              value=""
+            />
+          </td>
+          <td
+            *ngIf="income.type == 0 || income.type == 1"
+            class="cursor-pointer text-center text-[#FF0000] font-semibold"
+            (click)="onDeleteRow(i, 0)"
+          >
+            Delete
+          </td>
         </tr>
-        <tr *ngIf="income.type==2 || income.type==3 || income.type==4">
+        <tr *ngIf="income.type == 2 || income.type == 3 || income.type == 4">
           <td><br /></td>
         </tr>
       </ng-container>
@@ -47,41 +116,106 @@
       <ng-container *ngFor="let expense of expenses; let i = index">
         <tr class="border border-black">
           <td
-            class="border border-black text-right {{expense.type == 1 ? 'font-semibold' : expense.type == 0 ? 'font-black' : 'font-bold'}}">
-            {{expense.name}}</td>
-          <td *ngFor="let value of expense.tvalues; let j = index" tabindex="0" id="{{i+incomes.length}}_{{j}}"
-            #myElement (keydown)="onArrow($event, myElement)"
-            class="border border-black text-right {{expense.type == 1 ? 'font-semibold' : expense.type == 0 ? 'font-black' : 'font-bold'}}">
-            <p *ngIf="expense.type == 2 || expense.type == 3" class="w-full text-right">{{expense.values[j+1]}}</p>
-            <input *ngIf="expense.type == 0 || expense.type == 1" class="w-full text-right" type="text"
-              id="{{i + incomes.length}}_{{j}}" #myElement (keydown)="onKeyDown($event, myElement, i, myElement.value)"
-              [(ngModel)]="expense.values[j+1]" (change)="onDataChange()"
-              (contextmenu)="onRightClick($event, i, j, 1)" />
-            <input *ngIf="expense.type == 4" class="w-full text-right" type="text" id="{{i}}_{{j}}" #myElement
-              (keydown)="onKeyDown($event, myElement, i, myElement.value)" name="addSubExpense" value="" />
-            <input *ngIf="expense.type == 5" class="w-full text-right" type="text" id="{{i}}_{{j}}" #myElement
-              (keydown)="onKeyDown($event, myElement, i, myElement.value)" name="addParentExpense" value="" />
+            class="border border-black text-right {{
+              expense.type == 1
+                ? 'font-semibold'
+                : expense.type == 0
+                ? 'font-black'
+                : 'font-bold'
+            }}"
+          >
+            {{ expense.name }}
           </td>
-          <td *ngIf="expense.type == 0 || expense.type == 1"
-            class="cursor-pointer text-center text-[#FF0000] font-semibold" (click)="onDeleteRow(i, 1)">Delete</td>
+          <td
+            *ngFor="let value of expense.tvalues; let j = index"
+            tabindex="0"
+            id="{{ i + incomes.length }}_{{ j }}"
+            #myElement
+            (keydown)="onArrow($event, myElement)"
+            class="border border-black text-right {{
+              expense.type == 1
+                ? 'font-semibold'
+                : expense.type == 0
+                ? 'font-black'
+                : 'font-bold'
+            }}"
+          >
+            <p
+              *ngIf="expense.type == 2 || expense.type == 3"
+              class="w-full text-right"
+            >
+              {{ expense.values[j + 1] }}
+            </p>
+            <input
+              *ngIf="expense.type == 0 || expense.type == 1"
+              class="w-full text-right"
+              type="text"
+              id="{{ i + incomes.length }}_{{ j }}"
+              #myElement
+              (keydown)="onKeyDown($event, myElement, i, myElement.value)"
+              [(ngModel)]="expense.values[j + 1]"
+              (change)="onDataChange()"
+              (contextmenu)="onRightClick($event, i, j, 1)"
+            />
+            <input
+              *ngIf="expense.type == 4"
+              class="w-full text-right"
+              type="text"
+              id="{{ i }}_{{ j }}"
+              #myElement
+              (keydown)="onKeyDown($event, myElement, i, myElement.value)"
+              name="addSubExpense"
+              value=""
+            />
+            <input
+              *ngIf="expense.type == 5"
+              class="w-full text-right"
+              type="text"
+              id="{{ i }}_{{ j }}"
+              #myElement
+              (keydown)="onKeyDown($event, myElement, i, myElement.value)"
+              name="addParentExpense"
+              value=""
+            />
+          </td>
+          <td
+            *ngIf="expense.type == 0 || expense.type == 1"
+            class="cursor-pointer text-center text-[#FF0000] font-semibold"
+            (click)="onDeleteRow(i, 1)"
+          >
+            Delete
+          </td>
         </tr>
-        <tr *ngIf="expense.type==2 || expense.type==3 || expense.type==4">
+        <tr *ngIf="expense.type == 2 || expense.type == 3 || expense.type == 4">
           <td><br /></td>
         </tr>
       </ng-container>
       <!-- Balance -->
-      <tr class="border border-black" *ngFor="let balance of balances; let i = index">
-        <td class="border border-black text-right font-black">{{balance.name}}</td>
-        <td *ngFor="let value of balance.tvalues; let j = index" tabindex="0"
-          id="{{i+incomes.length+expenses.length}}_{{j}}" #myElement (keydown)="onArrow($event, myElement)"
-          class="border border-black text-right font-black">
-          <p class="w-full text-right">{{balance.values[j+1]}}</p>
+      <tr
+        class="border border-black"
+        *ngFor="let balance of balances; let i = index"
+      >
+        <td class="border border-black text-right font-black">
+          {{ balance.name }}
+        </td>
+        <td
+          *ngFor="let value of balance.tvalues; let j = index"
+          tabindex="0"
+          id="{{ i + incomes.length + expenses.length }}_{{ j }}"
+          #myElement
+          (keydown)="onArrow($event, myElement)"
+          class="border border-black text-right font-black"
+        >
+          <p class="w-full text-right">{{ balance.values[j + 1] }}</p>
         </td>
       </tr>
     </table>
   </div>
-  <app-context-menu [menuItems]="menuItems" id="context-menu" #contextMenu></app-context-menu>
-
+  <app-context-menu
+    [menuItems]="menuItems"
+    id="context-menu"
+    #contextMenu
+  ></app-context-menu>
 </main>
 
 <router-outlet />
